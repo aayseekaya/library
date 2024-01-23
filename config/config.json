@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "library123",
+    "database": "library",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "library123",
+    "database": "library_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "library123",
+    "database": "library_production",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
