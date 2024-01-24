@@ -58,10 +58,10 @@ const borrowBook = async (req: Request, res: Response) => {
 const returnAndRateBook = async (req: Request, res: Response) => {
     const bookId: number = parseInt(req.params.bookId, 10);
     const userId: number = parseInt(req.params.id, 10);
-    const rating: number = parseInt(req.body.score, 10);
+    const score: number = parseInt(req.body.score, 10);
 
     try {
-        await BookBorrowService.returnAndRateBook(bookId, userId, rating);
+        await BookBorrowService.returnAndRateBook(bookId, userId, score);
         res.status(200).json({ message: 'Book returned and rated successfully' });
     } catch (error: any) {
         res.status(500).json({ error: error.message });

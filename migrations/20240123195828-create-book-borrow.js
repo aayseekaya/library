@@ -18,7 +18,7 @@ module.exports = {
       score: {
         type: Sequelize.INTEGER
       },
-      user_id: {  // Eklenen kısım: Kullanıcı kimliği
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'users',
@@ -27,7 +27,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      book_id: {  // Eklenen kısım: Kitap kimliği
+      bookId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'books',

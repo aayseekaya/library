@@ -6,10 +6,10 @@ import BookBorrowModel from '../../models/bookBorrowModel';
 class BookBorrowService {
     static async borrowBook(bookId: number, userId: number) {
         try {
-            // Kitap ödünç alma işlemi
+
             const borrowInfo = {
                 borrowDate: new Date(),
-                // Diğer borrowBook model alanları buraya eklenebilir.
+                score: null
             };
 
             const borrowedBook = await BookModel.findByPk(bookId);
@@ -23,8 +23,7 @@ class BookBorrowService {
             await BookBorrowModel.create({
                 ...borrowInfo,
                 userId,
-                bookId,
-                // Diğer borrowBook model alanları buraya eklenebilir.
+                bookId
             });
 
             return borrowedBook;
@@ -34,23 +33,17 @@ class BookBorrowService {
         }
     }
 
-    static async returnAndRateBook(bookId: number, userId: number, rating: number) {
+    static async returnAndRateBook(bookId: number, userId: number, score: number) {
         try {
-            // Kitap teslim etme ve değerlendirme işlemi
-            const returnedBook = await BookModel.findOne({
-                where: { id: bookId, borrowedBy: userId },
-            });
+            const returnedBook = await BookModel.findByPk(bookId);
 
             if (!returnedBook) {
                 throw new Error('Book not found or not borrowed by the user');
             }
 
-            await returnedBook.update({ borrowedBy: null, rating });
-
             const borrowInfo = {
                 returnDate: new Date(),
-                rating,
-                // Diğer borrowBook model alanları buraya eklenebilir.
+                score
             };
 
             await BookBorrowModel.update(

@@ -1,7 +1,7 @@
-// models/bookBorrowModel.ts
-
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database';
+import BookModel from './bookModel';
+import UserModel from './userModel';
 
 class BookBorrow extends Model {
     public borrowDate!: Date;
@@ -9,12 +9,6 @@ class BookBorrow extends Model {
     public score!: number;
     public userId!: number;
     public bookId!: number;
-
-    static associate(models: any) {
-        // BookBorrow modeli, Users ve Books modelleriyle ilişkilidir.
-        BookBorrow.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
-        BookBorrow.belongsTo(models.Book, { foreignKey: 'bookId', as: 'book' });
-    }
 }
 
 BookBorrow.init(
@@ -40,9 +34,13 @@ BookBorrow.init(
     {
         sequelize,
         modelName: 'BookBorrow',
-        tableName: 'book_borrows', // Veritabanında kullanılacak tablo adı
-        schema: 'public', // Şema adı
+        tableName: 'book_borrows',
+        schema: 'public',
     }
 );
+
+BookBorrow.belongsTo(BookModel, { foreignKey: 'bookId', as: 'book' });
+BookBorrow.belongsTo(UserModel, { foreignKey: 'userId', as: 'user' });
+
 
 export default BookBorrow;

@@ -1,4 +1,7 @@
 import UserModel from '../../models/userModel';
+import BookBorrowModel from '../../models/bookBorrowModel';
+import BookModel from '../../models/bookModel';
+import { Op } from 'sequelize';
 
 class UserService {
     async getAllUsers() {
@@ -17,10 +20,39 @@ class UserService {
             if (!user) {
                 throw new Error('User not found');
             }
-            return user;
+
+            const currentBorrows = await BookBorrowModel.findAll({
+                where: {
+                    userId: userId,
+                    returnDate: null,
+                },
+                include: [{
+                    model: BookModel,
+                    as: 'book',
+                }],
+            });
+
+            const pastBorrows = await BookBorrowModel.findAll({
+                where: {
+                    userId: userId,
+                    returnDate: {
+                        [Op.ne]: null,
+                    },
+                },
+                include: [{
+                    model: BookModel,
+                    as: 'book',
+                }],
+            });
+
+            return {
+                user,
+                currentBorrows,
+                pastBorrows,
+            };
         } catch (error) {
             console.error(error);
-            throw new Error('Error fetching user');
+            throw new Error('Error fetching user details');
         }
     }
 
