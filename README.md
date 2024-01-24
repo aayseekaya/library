@@ -14,7 +14,8 @@ Kutuphaneyi kurmak için aşağıdaki adımları izleyin:
 
 1. GitHub'dan library reposunu indirin.
 2. Repoyu projenize ekleyin. 
-3. .env.example .env olarak degistirip kendi veritabani bilgilerinizi ekleyin
+3. .env.example .env olarak degistirip kendi veritabani bilgilerinizi ekleyin.
+4. config/config.json icerisindede  kendi veritabani bilgilerinizi duzenleyin.
 
 Önce bağımlılıkları yükleyin:
 
