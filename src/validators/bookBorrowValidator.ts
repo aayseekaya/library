@@ -2,7 +2,6 @@ import Joi from 'joi';
 
 export const bookBorrowValidationSchema = Joi.object({
 
-    borrowDate: Joi.date().required(),
     userId: Joi.number().integer().required(),
     bookId: Joi.number().integer().required(),
 });
