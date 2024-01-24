@@ -1,22 +1,36 @@
-// services/bookBorrowService.ts
-
 import BookModel from '../../models/bookModel';
 import BookBorrowModel from '../../models/bookBorrowModel';
+import User from "../../models/userModel";
 
 class BookBorrowService {
     static async borrowBook(bookId: number, userId: number) {
         try {
 
+            const user = await User.findByPk(userId);
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            const borrowedBook = await BookModel.findByPk(bookId);
+            if (!borrowedBook) {
+                throw new Error('Book not found');
+            }
+
+            const existingBorrow = await BookBorrowModel.findOne({
+                where: {
+                    bookId: bookId,
+                    returnDate: null,
+                }
+            });
+
+            if (existingBorrow) {
+                throw new Error('Book is already borrowed by someone else');
+            }
+
             const borrowInfo = {
                 borrowDate: new Date(),
                 score: null
             };
-
-            const borrowedBook = await BookModel.findByPk(bookId);
-
-            if (!borrowedBook) {
-                throw new Error('Book not found');
-            }
 
             await borrowedBook.update({ borrowedBy: userId });
 
@@ -27,9 +41,9 @@ class BookBorrowService {
             });
 
             return borrowedBook;
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            throw new Error('Error borrowing book');
+            throw new Error(error.message);
         }
     }
 

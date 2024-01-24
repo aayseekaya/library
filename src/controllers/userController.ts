@@ -49,7 +49,6 @@ const borrowBook = async (req: Request, res: Response) => {
         userId: req.params.id,
     });
 
-    const validationResult = bookBorrowValidationSchema.validate(req.params);
     if (validationResult.error) {
         return res.status(400).json({ error: validationResult.error.message });
     }
@@ -58,36 +57,41 @@ const borrowBook = async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.id, 10);
 
     try {
-        await BookBorrowService.borrowBook(bookId, userId);
-        res.status(200).json({ message: 'Book borrowed successfully' });
+
+        const result = await BookBorrowService.borrowBook(bookId, userId);
+        res.status(200).json({ message: 'Book borrowed successfully', result });
     } catch (error: any) {
+
         res.status(500).json({ error: error.message });
     }
 };
+
+
 
 const returnAndRateBook = async (req: Request, res: Response) => {
+    const validationResult = returnAndRateBookValidationSchema.validate({
+        bookId: req.params.bookId,
+        userId: req.params.id,
+        score: req.body.score,
+    });
+
+    if (validationResult.error) {
+        return res.status(400).json({ error: validationResult.error.message });
+    }
+
+    const bookId: number = parseInt(req.params.bookId, 10);
+    const userId: number = parseInt(req.params.id, 10);
+    const score: number = parseInt(req.body.score, 10);
+
     try {
-        const bookId: number = parseInt(req.params.bookId, 10);
-        const userId: number = parseInt(req.params.id, 10);
-        const score: number = parseInt(req.body.score, 10);
-
-        const validationData = {
-            bookId,
-            userId,
-            score,
-        };
-
-        const validationResult = returnAndRateBookValidationSchema.validate(validationData);
-        if (validationResult.error) {
-            return res.status(400).json({ error: validationResult.error.message });
-        }
-
-        await BookBorrowService.returnAndRateBook(bookId, userId, score);
-        res.status(200).json({ message: 'Book returned and rated successfully' });
+        const result = await BookBorrowService.returnAndRateBook(bookId, userId, score);
+        res.status(200).json({ message: 'Book returned and rated successfully', result });
     } catch (error: any) {
+
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 export { getAllUsers, getUserById, createUser, borrowBook, returnAndRateBook};
