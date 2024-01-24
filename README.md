@@ -13,7 +13,8 @@ Kullanılan Teknolojiler
 Kutuphaneyi kurmak için aşağıdaki adımları izleyin:
 
 1. GitHub'dan library reposunu indirin.
-2. Repoyu projenize ekleyin.
+2. Repoyu projenize ekleyin. 
+3. .env.example .env olarak degistirip kendi veritabani bilgilerinizi ekleyin
 
 Önce bağımlılıkları yükleyin:
 
