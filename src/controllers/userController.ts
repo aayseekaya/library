@@ -44,6 +44,10 @@ const createUser = async (req: Request, res: Response) => {
 };
 
 const borrowBook = async (req: Request, res: Response) => {
+    const validationResult = bookBorrowValidationSchema.validate({
+        bookId: req.params.bookId,
+        userId: req.params.id,
+    });
 
     const validationResult = bookBorrowValidationSchema.validate(req.params);
     if (validationResult.error) {
