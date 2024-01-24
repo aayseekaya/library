@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import BookService from '../services/bookService';
+import {bookValidationSchema} from "../validators/bookValidator";
 
 const bookService = new BookService();
 
@@ -27,6 +28,12 @@ const createBook = async (req: Request, res: Response) => {
     const bookData = req.body;
 
     try {
+
+
+        const validationResult = bookValidationSchema.validate(bookData);
+        if (validationResult.error) {
+            return res.status(400).json({ error: validationResult.error.message });
+        }
         const newBook = await bookService.createBook(bookData);
         res.status(201).json(newBook);
     } catch (error: any) {
