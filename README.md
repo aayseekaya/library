@@ -35,6 +35,12 @@ Docker'ı başlatın:
 docker-compose up -d 
 ```
 
+pg pg-hstore paketlerini yükleyin:
+
+```
+npm install pg pg-hstore
+
+```
 Migration'ları çalıştırın:
 
 ```
