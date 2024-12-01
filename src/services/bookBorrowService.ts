@@ -3,7 +3,7 @@ import BookBorrowModel from '../../models/bookBorrowModel';
 import User from "../../models/userModel";
 
 class BookBorrowService {
-    static async borrowBook(bookId: number, userId: number) {
+     async borrowBook(bookId: number, userId: number) {
         try {
 
             const user = await User.findByPk(userId);
@@ -47,7 +47,7 @@ class BookBorrowService {
         }
     }
 
-    static async returnAndRateBook(bookId: number, userId: number, score: number) {
+     async returnAndRateBook(bookId: number, userId: number, score: number) {
         try {
             const returnedBook = await BookModel.findByPk(bookId);
 
@@ -62,8 +62,12 @@ class BookBorrowService {
 
             await BookBorrowModel.update(
                 { ...borrowInfo },
-                { where: { bookId, userId, returnDate: null } }
+                {
+                    where: { bookId, userId, returnDate: null },
+                    returning: true
+                }
             );
+
 
             return returnedBook;
         } catch (error) {
